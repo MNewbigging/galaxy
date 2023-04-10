@@ -17,13 +17,14 @@ interface GalaxyProps {
 }
 
 export class GameState {
+  private clock = new THREE.Clock();
   private scene = new THREE.Scene();
   private camera: THREE.PerspectiveCamera;
   private renderer: THREE.WebGLRenderer;
   private controls: OrbitControls;
   private gui = new GUI();
   private galaxyProps: GalaxyProps = {
-    count: 1000,
+    count: 10000,
     size: 0.02,
     radius: 5,
     branches: 3,
@@ -201,6 +202,12 @@ export class GameState {
 
   private update = () => {
     requestAnimationFrame(this.update);
+
+    const dt = this.clock.getDelta();
+
+    if (this.galaxy) {
+      this.galaxy.rotation.y += dt * 0.0125;
+    }
 
     this.renderer.render(this.scene, this.camera);
     this.controls.update();
